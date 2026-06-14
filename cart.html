@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Shopping Cart - Top-Notch Mattresses</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #e31e24;
+            --primary-dark: #b81a1f;
+            --navy: #1e3a8a;
+            --navy-dark: #152e6e;
+        }
+        .cart-hero { 
+            background: linear-gradient(135deg, var(--navy), var(--navy-dark)); 
+            padding: 40px 0; 
+            text-align: center; 
+            color: white; 
+        }
+        .cart-hero h1 { 
+            font-size: 2rem; 
+            font-family: 'Bebas Neue', sans-serif; 
+            margin-bottom: 10px;
+        }
+        .cart-hero p { 
+            opacity: 0.9; 
+            font-size: 0.9rem;
+        }
+        .cart-page-main { 
+            padding: 60px 0; 
+            background: var(--gray-100);
+        }
+        .cart-container { 
+            display: grid; 
+            grid-template-columns: 1.5fr 1fr; 
+            gap: 40px; 
+        }
+        .cart-items { 
+            background: white; 
+            border-radius: 15px; 
+            padding: 25px; 
+            box-shadow: var(--shadow-sm); 
+        }
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 20px;
+        }
+        .cart-header h2 {
+            font-size: 1.3rem;
+            color: var(--navy);
+            margin: 0;
+        }
+        .clear-cart {
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+        .clear-cart:hover {
+            color: #c82333;
+            text-decoration: underline;
+        }
+        .cart-item { 
+            display: flex; 
+            gap: 20px; 
+            padding: 20px 0; 
+            border-bottom: 1px solid #eee; 
+        }
+        .cart-item:last-child { 
+            border-bottom: none; 
+        }
+        .cart-item-image { 
+            width: 100px; 
+            height: 100px; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            flex-shrink: 0; 
+            background: var(--gray-100);
+        }
+        .cart-item-image img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+        .cart-item-details { 
+            flex: 1; 
+        }
+        .cart-item-name { 
+            font-size: 1rem; 
+            font-weight: 600; 
+            margin-bottom: 5px; 
+            color: var(--navy); 
+        }
+        .cart-item-price { 
+            color: var(--primary); 
+            font-weight: 700; 
+            margin-bottom: 10px; 
+            font-size: 1rem;
+        }
+        .cart-item-actions { 
+            display: flex; 
+            align-items: center; 
+            gap: 20px; 
+            flex-wrap: wrap; 
+        }
+        .quantity-control { 
+            display: flex; 
+            align-items: center; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            overflow: hidden; 
+        }
+        .quantity-control button { 
+            width: 32px; 
+            height: 32px; 
+            background: var(--gray-100); 
+            border: none; 
+            cursor: pointer; 
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        .quantity-control button:hover {
+            background: var(--primary);
+            color: white;
+        }
+        .quantity-control input { 
+            width: 50px; 
+            height: 32px; 
+            text-align: center; 
+            border: none; 
+            border-left: 1px solid #ddd; 
+            border-right: 1px solid #ddd; 
+            font-size: 0.9rem;
+        }
+        .remove-item { 
+            color: #dc3545; 
+            cursor: pointer; 
+            font-size: 0.85rem; 
+            transition: var(--transition); 
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .remove-item:hover { 
+            color: #c82333; 
+        }
+        .cart-summary { 
+            background: white; 
+            border-radius: 15px; 
+            padding: 25px; 
+            box-shadow: var(--shadow-sm); 
+            height: fit-content; 
+            position: sticky; 
+            top: 100px; 
+        }
+        .cart-summary h3 { 
+            color: var(--navy); 
+            margin-bottom: 20px; 
+            font-size: 1.3rem;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        .summary-row { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 12px 0; 
+            border-bottom: 1px solid #eee; 
+        }
+        .summary-row.total { 
+            font-weight: 700; 
+            font-size: 1.2rem; 
+            color: var(--primary); 
+            border-bottom: none; 
+            margin-top: 10px;
+            padding-top: 15px;
+        }
+        .checkout-btn { 
+            width: 100%; 
+            background: #28a745; 
+            color: white; 
+            border: none; 
+            padding: 14px; 
+            border-radius: 30px; 
+            font-weight: 600; 
+            margin-top: 20px; 
+            cursor: pointer; 
+            transition: var(--transition); 
+            font-size: 1rem;
+        }
+        .checkout-btn:hover { 
+            background: #218838; 
+            transform: translateY(-2px); 
+        }
+        .continue-shop { 
+            width: 100%; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 12px; 
+            border-radius: 30px; 
+            font-weight: 600; 
+            margin-top: 10px; 
+            cursor: pointer; 
+            transition: var(--transition); 
+            text-align: center; 
+            display: block; 
+            text-decoration: none; 
+            font-size: 0.9rem;
+        }
+        .continue-shop:hover { 
+            background: var(--primary-dark); 
+            transform: translateY(-2px); 
+        }
+        .empty-cart { 
+            text-align: center; 
+            padding: 60px 20px; 
+        }
+        .empty-cart i { 
+            font-size: 70px; 
+            color: var(--gray-400); 
+            margin-bottom: 20px; 
+        }
+        .empty-cart p { 
+            font-size: 1.2rem; 
+            color: var(--gray-600); 
+            margin-bottom: 25px; 
+        }
+        .empty-cart .shop-now-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .empty-cart .shop-now-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        .delivery-note {
+            background: #f0f7ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .delivery-note i {
+            font-size: 1.2rem;
+        }
+        @media (max-width: 768px) { 
+            .cart-container { 
+                grid-template-columns: 1fr; 
+            }
+            .cart-item {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .cart-item-actions {
+                justify-content: center;
+            }
+            .cart-header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Mobile Menu Overlay -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Mobile Drawer -->
+<nav class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-header">
+    <a class="afrishop-logo" href="index.html">TOP-NOTCH<span>MATTRESSES</span></a>
+    <button class="mobile-close" id="closeMobileBtn"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="cat-item"><a href="category.html?cat=mattresses"><i class="fas fa-bed"></i> Mattresses</a></div>
+  <div class="cat-item"><a href="category.html?cat=bedsheets"><i class="fas fa-bed"></i> Bedsheets</a></div>
+  <div class="cat-item"><a href="category.html?cat=duvets"><i class="fas fa-tshirt"></i> Duvets & Bedcovers</a></div>
+  <div class="cat-item"><a href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a></div>
+  <div class="cat-item"><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></div>
+</nav>
+
+<!-- Promo Bar -->
+<div class="promo-bar">
+  <span><i class="fas fa-truck"></i> Free Delivery on Orders Over UGX 500k</span>
+  <span class="accent">|</span>
+  <span><i class="fas fa-tag"></i> <span class="accent">GRAND SALE</span> – Up to 50% OFF!</span>
+  <span class="accent">|</span>
+  <span><i class="fas fa-shield-alt"></i> Quality Assured</span>
+</div>
+
+<!-- Deal Banner -->
+<div class="deal-banner">
+  <div class="brand-badge">
+    <span class="mega">Top-Notch</span>
+    <span class="home-tag">BEDDINGS</span>
+    <span class="savings">Savings</span>
+  </div>
+  <span class="today"><i class="far fa-clock"></i> LIMITED OFFER</span>
+  <a href="#" class="shop-now-link">SHOP NOW <i class="fas fa-chevron-right"></i></a>
+  <div class="call-box">
+    <p>📞 Call for Deals</p>
+    <p class="phone">0758647456</p>
+  </div>
+</div>
+
+<!-- Brand Bar -->
+<div class="brand-bar">
+  <span class="best-deals">Get Best <span>Deals</span></span>
+  <span class="afrishop-logo-sm">TOP-NOTCH<span>MATTRESSES</span></span>
+  <span class="we-deliver"><i class="fas fa-truck"></i> We Deliver</span>
+  <div class="icon-group">
+    <button class="icon-btn" title="Wishlist"><i class="far fa-heart"></i><span class="badge">3</span></button>
+    <button class="icon-btn" title="Account"><i class="far fa-user"></i></button>
+    <a href="cart.html" class="icon-btn active" title="Cart"><i class="fas fa-shopping-cart"></i><span id="cart-count">0</span></a>
+    <span class="shop-now-sm">SHOP NOW</span>
+  </div>
+</div>
+
+<!-- Main Nav -->
+<header class="main-nav">
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  <a class="afrishop-logo" href="index.html">TOP-NOTCH<span>MATTRESSES</span></a>
+  <div class="search-bar">
+    <input type="text" placeholder="Search products..." id="searchInput" onkeydown="if(event.key==='Enter')doSearch()">
+    <button onclick="doSearch()"><i class="fas fa-search"></i> Search</button>
+  </div>
+  <nav class="nav-links">
+    <div class="dropdown-wrapper">
+      <a href="#" class="nav-link">Categories <i class="fas fa-chevron-down"></i></a>
+      <ul class="dropdown">
+        <li><a href="category.html?cat=mattresses">Mattresses</a></li>
+        <li><a href="category.html?cat=bedsheets">Bedsheets</a></li>
+        <li><a href="category.html?cat=duvets">Duvets & Bedcovers</a></li>
+      </ul>
+    </div>
+    <a href="about.html" class="nav-link"><i class="fas fa-info-circle"></i> <span>About</span></a>
+    <a href="contact.html" class="nav-link"><i class="fas fa-envelope"></i> <span>Contact</span></a>
+    <a href="cart.html" class="nav-link active"><i class="fas fa-shopping-cart"></i> <span>Cart</span><span id="cart-count-nav">0</span></a>
+  </nav>
+</header>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb-bar"><a href="index.html">Home</a> <i class="fas fa-chevron-right"></i> <span>Shopping Cart</span></div>
+
+<!-- Cart Hero -->
+<section class="cart-hero">
+  <div class="container">
+    <h1>Your Shopping Cart</h1>
+    <p>Review your items and proceed to checkout</p>
+  </div>
+</section>
+
+<!-- Cart Content -->
+<section class="cart-page-main">
+  <div class="container">
+    <div class="cart-container">
+      <div class="cart-items" id="cart-items">
+        <!-- Cart items will be loaded here dynamically -->
+      </div>
+      <div class="cart-summary">
+        <h3>Order Summary</h3>
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="subtotal">UGX 0</span>
+        </div>
+        <div class="summary-row">
+          <span>Delivery Fee</span>
+          <span>Free Delivery</span>
+        </div>
+        <div class="summary-row">
+          <span>Discount</span>
+          <span id="discount-amount">UGX 0</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total</span>
+          <span id="total">UGX 0</span>
+        </div>
+        <button class="checkout-btn" id="checkout-btn">
+          <i class="fab fa-whatsapp"></i> Checkout via WhatsApp
+        </button>
+        <a href="index.html" class="continue-shop">
+          <i class="fas fa-arrow-left"></i> Continue Shopping
+        </a>
+        <div class="delivery-note">
+          <i class="fas fa-truck"></i>
+          <span>Free delivery on all orders over UGX 500,000. Delivery within 24-48 hours in Kampala.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-container">
+      <div class="footer-column">
+        <h3>About Top-Notch</h3>
+        <p>Your trusted source for premium mattresses and beddings in Uganda. Quality, comfort, and affordability.</p>
+      </div>
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms & Conditions</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Contact Us</h3>
+        <p><i class="fas fa-map-marker-alt"></i> Kisenyi Bus Terminal Building, Kampala</p>
+        <p><i class="fas fa-phone"></i> 0758647456</p>
+        <p><i class="fas fa-envelope"></i> topnotchmattresses@gmail.com</p>
+      </div>
+      <div class="footer-column">
+        <h3>Follow Us</h3>
+        <div class="social-links">
+          <a href="https://www.instagram.com/khedila_pro_ug?igsh=bzl2d2FpMGdnenFz"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@topnotch608"><i class="fab fa-tiktok"></i></a>
+          <a href="https://www.facebook.com/share/1E3zDhCzjN/"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://youtube.com/@ghadafijulius-s7x?si=W4IvHSzY52c9iJwG"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Top-Notch Mattresses & Beddings. All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- FAB Container -->
+<div class="fab-container">
+  <div class="fab-main fab-cart">
+    <i class="fas fa-shopping-cart"></i>
+    <span class="fab-cart-count">0</span>
+  </div>
+  <div class="fab-main fab-whatsapp">
+    <i class="fab fa-whatsapp"></i>
+  </div>
+  <div class="fab-main fab-call">
+    <i class="fas fa-phone"></i>
+  </div>
+  <div class="fab-cart-container">
+    <div class="fab-cart-header">
+      <h3>Your Cart</h3>
+      <button class="fab-cart-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="fab-cart-items"></div>
+    <div class="fab-cart-summary">
+      <div class="fab-cart-total">
+        <span>Total:</span>
+        <span id="fab-cart-total">UGX 0</span>
+      </div>
+      <div class="fab-cart-buttons">
+        <a href="cart.html" class="btn">View Cart</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/categories.js"></script>
+<script src="js/product.js"></script>
+<script src="js/script.js"></script>
+
+<!-- Additional cart-specific JavaScript -->
+<script>
+    // Clear cart functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add clear cart button if cart has items
+        var cartItemsContainer = document.getElementById('cart-items');
+        
+        // Function to add clear cart button
+        function addClearCartButton() {
+            var cart = getCart();
+            var existingHeader = document.querySelector('.cart-header');
+            
+            if (cart.length > 0 && !existingHeader) {
+                var header = document.createElement('div');
+                header.className = 'cart-header';
+                header.innerHTML = '<h2>Your Items <span id="cart-item-count">(' + cart.length + ' items)</span></h2><button class="clear-cart" id="clearCartBtn"><i class="fas fa-trash-alt"></i> Clear Cart</button>';
+                cartItemsContainer.insertBefore(header, cartItemsContainer.firstChild);
+                
+                document.getElementById('clearCartBtn')?.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to clear your entire cart?')) {
+                        sessionStorage.removeItem('topnotch_session_cart');
+                        loadCartItems();
+                        updateCartCount();
+                        updateFabCart();
+                        showNotification('Cart cleared successfully');
+                    }
+                });
+            } else if (cart.length === 0) {
+                var existing = document.querySelector('.cart-header');
+                if (existing) existing.remove();
+            }
+        }
+        
+        // Override loadCartItems to include clear cart button
+        var originalLoadCartItems = window.loadCartItems;
+        if (originalLoadCartItems) {
+            window.loadCartItems = function() {
+                originalLoadCartItems();
+                addClearCartButton();
+            };
+        }
+        
+        // Initial load
+        if (typeof loadCartItems === 'function') {
+            loadCartItems();
+            addClearCartButton();
+        }
+    });
+</script>
+</body>
+</html>

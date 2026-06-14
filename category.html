@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Category - Top-Notch Mattresses</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #e31e24;
+            --primary-dark: #b81a1f;
+            --navy: #1e3a8a;
+            --navy-dark: #152e6e;
+        }
+        .category-hero { background: linear-gradient(135deg, var(--navy), var(--navy-dark)); padding: 40px 0; text-align: center; color: white; }
+        .category-hero h1 { font-size: 2rem; font-family: 'Bebas Neue', sans-serif; margin-bottom: 10px; }
+        .category-hero p { opacity: 0.9; }
+        .filters-bar { background: white; padding: 20px; border-radius: 12px; margin-bottom: 30px; box-shadow: var(--shadow-sm); display: flex; gap: 20px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+        .filter-group { display: flex; align-items: center; gap: 10px; }
+        .filter-group label { font-weight: 600; color: var(--navy); }
+        .filter-group select { padding: 8px 15px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Poppins', sans-serif; }
+        .category-product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        .no-products { text-align: center; padding: 60px; color: var(--gray-600); }
+        .pagination { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
+        .pagination button { padding: 10px 20px; background: white; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; transition: var(--transition); }
+        .pagination button:hover:not(:disabled) { background: var(--primary); color: white; border-color: var(--primary); }
+        .pagination button:disabled { opacity: 0.5; cursor: not-allowed; }
+        @media (max-width: 768px) { .filters-bar { flex-direction: column; align-items: stretch; } .filter-group { justify-content: space-between; } }
+    </style>
+</head>
+<body>
+
+<!-- Mobile Menu Overlay -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Mobile Drawer -->
+<nav class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-header">
+    <a class="afrishop-logo" href="index.html">TOP-NOTCH<span>MATTRESSES</span></a>
+    <button class="mobile-close" id="closeMobileBtn"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="cat-item"><a href="category.html?cat=mattresses"><i class="fas fa-bed"></i> Mattresses</a></div>
+  <div class="cat-item"><a href="category.html?cat=bedsheets"><i class="fas fa-bed"></i> Bedsheets</a></div>
+  <div class="cat-item"><a href="category.html?cat=duvets"><i class="fas fa-tshirt"></i> Duvets & Bedcovers</a></div>
+  <div class="cat-item"><a href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a></div>
+  <div class="cat-item"><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></div>
+</nav>
+
+<!-- Promo Bar -->
+<div class="promo-bar">
+  <span><i class="fas fa-truck"></i> Free Delivery on Orders Over UGX 500k</span>
+  <span class="accent">|</span>
+  <span><i class="fas fa-tag"></i> <span class="accent">GRAND SALE</span> – Up to 50% OFF!</span>
+  <span class="accent">|</span>
+  <span><i class="fas fa-shield-alt"></i> Quality Assured</span>
+</div>
+
+<!-- Deal Banner -->
+<div class="deal-banner">
+  <div class="brand-badge">
+    <span class="mega">Top-Notch</span>
+    <span class="home-tag">BEDDINGS</span>
+    <span class="savings">Savings</span>
+  </div>
+  <span class="today"><i class="far fa-clock"></i> LIMITED OFFER</span>
+  <a href="#" class="shop-now-link">SHOP NOW <i class="fas fa-chevron-right"></i></a>
+  <div class="call-box">
+    <p>📞 Call for Deals</p>
+    <p class="phone">0758647456</p>
+  </div>
+</div>
+
+<!-- Brand Bar -->
+<div class="brand-bar">
+  <span class="best-deals">Get Best <span>Deals</span></span>
+  <span class="afrishop-logo-sm">TOP-NOTCH<span>MATTRESSES</span></span>
+  <span class="we-deliver"><i class="fas fa-truck"></i> We Deliver</span>
+  <div class="icon-group">
+    <button class="icon-btn" title="Wishlist"><i class="far fa-heart"></i><span class="badge">3</span></button>
+    <button class="icon-btn" title="Account"><i class="far fa-user"></i></button>
+    <a href="cart.html" class="icon-btn" title="Cart"><i class="fas fa-shopping-cart"></i><span id="cart-count">0</span></a>
+    <span class="shop-now-sm">SHOP NOW</span>
+  </div>
+</div>
+
+<!-- Main Nav -->
+<header class="main-nav">
+  <button class="hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  <a class="afrishop-logo" href="index.html">TOP-NOTCH<span>MATTRESSES</span></a>
+  <div class="search-bar">
+    <input type="text" placeholder="Search products..." id="searchInput" onkeydown="if(event.key==='Enter')doSearch()">
+    <button onclick="doSearch()"><i class="fas fa-search"></i> Search</button>
+  </div>
+  <nav class="nav-links">
+    <div class="dropdown-wrapper">
+      <a href="#" class="nav-link">Categories <i class="fas fa-chevron-down"></i></a>
+      <ul class="dropdown">
+        <li><a href="category.html?cat=mattresses">Mattresses</a></li>
+        <li><a href="category.html?cat=bedsheets">Bedsheets</a></li>
+        <li><a href="category.html?cat=duvets">Duvets & Bedcovers</a></li>
+      </ul>
+    </div>
+    <a href="about.html" class="nav-link"><i class="fas fa-info-circle"></i> <span>About</span></a>
+    <a href="contact.html" class="nav-link"><i class="fas fa-envelope"></i> <span>Contact</span></a>
+    <a href="cart.html" class="nav-link"><i class="fas fa-shopping-cart"></i> <span>Cart</span><span id="cart-count-nav">0</span></a>
+  </nav>
+</header>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb-bar"><a href="index.html">Home</a> <i class="fas fa-chevron-right"></i> <span id="breadcrumb-category">Category</span></div>
+
+<!-- Category Hero -->
+<section class="category-hero">
+  <div class="container">
+    <h1 id="category-title">Category Name</h1>
+    <p id="category-description">Browse our premium selection of mattresses and beddings</p>
+  </div>
+</section>
+
+<!-- Filters -->
+<div class="container">
+  <div class="filters-bar">
+    <div class="filter-group"><label>Sort by:</label><select id="sort"><option value="default">Default</option><option value="price-low">Price: Low to High</option><option value="price-high">Price: High to Low</option><option value="name-asc">Name: A to Z</option></select></div>
+    <div class="filter-group"><label>Price Range:</label><select id="price-range"><option value="all">All Prices</option><option value="0-100000">Under UGX 100,000</option><option value="100000-300000">UGX 100k - 300k</option><option value="300000-500000">UGX 300k - 500k</option><option value="500000-">Over UGX 500,000</option></select></div>
+  </div>
+</div>
+
+<!-- Products Grid -->
+<section class="featured-products">
+  <div class="container">
+    <div class="category-product-grid" id="category-product-grid"></div>
+    <div class="pagination" id="pagination">
+      <button id="prev-page" disabled>Previous</button>
+      <span id="page-info">Page 1</span>
+      <button id="next-page" disabled>Next</button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer><div class="container"><div class="footer-container"><div class="footer-column"><h3>About Top-Notch</h3><p>Your trusted source for premium mattresses and beddings in Uganda.</p></div><div class="footer-column"><h3>Quick Links</h3><ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms & Conditions</a></li></ul></div><div class="footer-column"><h3>Contact Us</h3><p><i class="fas fa-map-marker-alt"></i> Kisenyi Bus Terminal Building, Kampala</p><p><i class="fas fa-phone"></i> 0758647456</p><p><i class="fas fa-envelope"></i> topnotchmattresses@gmail.com</p></div><div class="footer-column"><h3>Follow Us</h3><div class="social-links"><a href="https://www.instagram.com/khedila_pro_ug?igsh=bzl2d2FpMGdnenFz"><i class="fab fa-instagram"></i></a><a href="https://www.tiktok.com/@topnotch608"><i class="fab fa-tiktok"></i></a><a href="https://www.facebook.com/share/1E3zDhCzjN/"><i class="fab fa-facebook-f"></i></a><a href="https://youtube.com/@ghadafijulius-s7x?si=W4IvHSzY52c9iJwG"><i class="fab fa-youtube"></i></a></div></div></div><div class="footer-bottom"><p>&copy; 2025 Top-Notch Mattresses & Beddings. All Rights Reserved.</p></div></div></footer>
+
+<!-- FAB Container -->
+<div class="fab-container"><div class="fab-main fab-cart"><i class="fas fa-shopping-cart"></i><span class="fab-cart-count">0</span></div><div class="fab-main fab-whatsapp"><i class="fab fa-whatsapp"></i></div><div class="fab-main fab-call"><i class="fas fa-phone"></i></div><div class="fab-cart-container"><div class="fab-cart-header"><h3>Your Cart</h3><button class="fab-cart-close"><i class="fas fa-times"></i></button></div><div class="fab-cart-items"></div><div class="fab-cart-summary"><div class="fab-cart-total"><span>Total:</span><span id="fab-cart-total">UGX 0</span></div><div class="fab-cart-buttons"><a href="cart.html" class="btn">View Cart</a></div></div></div></div>
+
+<script src="js/categories.js"></script>
+<script src="js/product.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
